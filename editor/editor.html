@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDE</title>
+    <link rel="stylesheet" href="Style.css">
+</head>
+
+<body>
+
+        <div class="header">
+            <div class="lang_menu_bar">
+                <label for="cars">Choose a Language:</label>
+                    <select name="cars" id="cars" onchange="change_lang(this.selectedIndex)">
+                        <option value="volvo">C++</option>
+                        <option value="saab">Python</option>
+                        <option value="mercedes">Java</option>
+                    </select>
+            </div>
+
+            <div class="upload">
+                <img src="Images/upload-to-cloud-button.png" class="save_icon">
+            </div>
+
+            <div class="theme" onclick="change_theme()">
+                <img src="Images/Day.png" class="theme_changer">
+            </div>
+
+            <div class="share">
+                <img src="Images/Share.png" class="share_icon">
+            </div>
+
+            <div class="settings">
+                <img src="Images/Setting.png" class="setting_icon">
+            </div>
+
+        </div>
+
+        <div class="main_body">
+            <div class="left_side">
+
+                <div id="editor"></div>
+
+                <div class="foot_bar">
+
+                    <div>
+                        <img src="Images/Folder.png" class="file_icon">
+                        <img src="Images/Download.png" class="download_icon" onclick="savefile()">
+                        <img src="Images/full-screen.png" class="full_screen_icon">
+                    </div>
+
+                    <div>
+                        <button id="clicke" onclick="clicke()" class="run_button" style="color: white; height: 40px; width: 120px; 
+                            font-size: 1.5rem; background-color: green;">
+                                Run
+                            </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="right_side">
+                <div class="upper_right">
+
+                    <div class="head">
+                        <div>
+                            <p class="text2">Input</p>
+                        </div>
+                    </div>
+            
+                    <div>
+                        <textarea id="input_txt" class="input_field2" spellcheck="false" style="background-color: #ffffee; padding: 8px; font-size: 1rem; color: black;" placeholder="Input Here"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="lower_right">
+
+                    <div class="head">
+                        <div class="text2">
+                            <p>Output</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="input_field2" style="background-color: #ffffee; border:1px solid black">
+                            <p id="output_txt" class="text3" style="font-size: 1rem; color: black; font-weight: 600;">Output</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <script
+            src="./ace/ace.js"
+            type="text/javascript"
+            charset="utf-8"
+        ></script>
+
+        <script>
+            console.log("asdfas");
+
+            //setup editor theme and language
+            var editor = ace.edit("editor");
+            editor.setTheme("ace/theme/tomorrow");
+            editor.session.setMode("ace/mode/c_cpp");
+            //c_cpp, java, python
+            var java_template = `import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+/* Name of the class has to be 'Main' only if the class is public. */
+
+class Main {
+    public static void main (String[] args) throws java.lang.Exception {
+        //Write your code from here
+    }
+}`;
+            var python_template = "# Write your code from here"
+            var cpp_template = "#include <bits/stdc++.h>\nusing namespace std;\n\nint main(){\n\t//Write your code here\n\treturn 0;\n}"
+            editor.setValue(cpp_template);
+
+            var theme = 0;
+            function change_theme(){
+                if(theme == 0){
+                    editor.setTheme("ace/theme/monokai")
+                    theme = 1;
+                }else{
+                    editor.setTheme("ace/theme/tomorrow")
+                    theme = 0;
+                }
+            }
+
+            var langs = ["cpp", "python", "java"];
+            var lang_code = 0;
+            function change_lang(x){
+                lang_code = x;
+                if(lang_code == 0){
+                    editor.session.setMode("ace/mode/c_cpp");
+                    editor.setValue(cpp_template);
+                }else if(lang_code == 1){
+                    editor.session.setMode("ace/mode/python");
+                    editor.setValue(python_template);
+                }else{
+                    editor.session.setMode("ace/mode/java");
+                    editor.setValue(java_template);
+                }
+            }
+
+            function savefile() {
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(editor.getValue()));
+                if(lang_code == 0){
+                    element.setAttribute('download', "cpp");
+                }else if(lang_code == 1){
+                    element.setAttribute('download', "python");
+                }else{
+                    element.setAttribute('download', "java");
+                }
+
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            }
+
+            //after clicking on button, submission happens
+            function clicke() {
+                document.getElementById("clicke").disabled = true;
+                document.getElementById('clicke').style.backgroundColor = 'grey';
+                document.getElementById("output_txt").innerHTML = "Please wait...\nYour code is running on our servers...";
+                //POST Request
+                var sc = editor.getValue();
+                var inp = document.getElementById("input_txt").value;
+                var lang = langs[lang_code];
+
+                function encodeQueryData(data) {
+                    const ret = [];
+                    for (let d in data)
+                        ret.push(
+                            encodeURIComponent(d) + "=" + encodeURIComponent(data[d])
+                        );
+                    return ret.join("&");
+                }
+
+                const params = {
+                    source_code: sc,
+                    language: lang,
+                    input: inp,
+                    api_key: "guest",
+                };
+
+                var url = "http://api.paiza.io:80/runners/create?" + encodeQueryData(params);
+
+                console.log(params, url);
+                //getting id of submission and result of submission
+                fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                    },
+                })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json);
+                    setTimeout(()=>{
+                      //getting result of submission
+                      var ide = json.id;
+                      console.log(ide);
+                      const params = {
+                          id: ide,
+                          api_key: "guest",
+                      };
+
+                      var url1 = "http://api.paiza.io:80/runners/get_details?" + encodeQueryData(params);
+                      console.log(url1);
+
+                      fetch(url1)
+                      .then((data) => {
+                          return data.json();
+                      })
+                      .then((post) => {
+                          console.log(post);
+                          console.log(post.stdout);
+                          document.getElementById("output_txt").innerHTML = post.stdout;
+                          document.getElementById('clicke').style.backgroundColor = 'green';
+                          document.getElementById("clicke").disabled = false;
+                      });
+                    }, 10000)})
+                  .catch((err) => console.log(err));
+            }
+            
+        </script>
+    
+</body>
+</html>

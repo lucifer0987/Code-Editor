@@ -1,0 +1,189 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    height: 100vh;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header{
+    width: 100%;
+    height: 10vh;
+    background-color: #8cdefc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lang_menu_bar{
+    background-color: white;
+    padding: 8.5px 20px 8.5px 20px;
+    margin-left: -20px;
+    border-radius: 50px;
+}
+
+.save_icon{
+    width: 36px;
+    background-color: white;
+    padding: 5px;
+    margin-left: 700px;
+    display: flex;
+    border-radius: 5px;
+    
+}
+
+.save_icon:hover{
+    opacity: .85;
+}
+
+.theme_changer{
+    width: 35px;
+    background-color: white;
+    padding: 5px;
+    display: flex;
+    margin-left: 20px;
+    justify-content: flex-end;
+    border-radius: 5px;
+}
+
+.theme_changer:hover{
+    opacity: .85;
+}
+
+.share_icon{
+    width: 36px;
+    background-color: white;
+    padding: 7px;
+    display: flex;
+    margin-left: 20px;
+    justify-content: flex-end;
+    border-radius: 5px;
+}
+
+.share_icon:hover{
+    opacity: .85;
+}
+
+.setting_icon{
+    width: 36px;
+    background-color: white;
+    padding: 7px;
+    display: flex;
+    margin-left:20px;
+    flex-direction: row-reverse;
+    border-radius: 5px;
+}
+
+.setting_icon:hover{
+    opacity: .85;
+}
+
+.main_body{
+    display: flex;
+    flex-direction: row;
+}
+
+.left_side{
+    display: flex;
+    flex-direction: column;
+}
+
+#editor{
+    width: 70vw;
+    height: 76vh;
+    overflow: auto;
+    font-size: 1.2rem;
+    padding-top: 8px;
+}
+
+.text{
+    margin-left: 30px;
+    margin-top: 20px;
+}
+
+.foot_bar{
+    background-color: rgb(197, 192, 192);
+    width: 70vw;
+    height: 15vh;
+    display: flex;
+    justify-content: center;
+}
+
+.file_icon{
+    width: 7%;
+    background-color: white;
+    padding: 7px;
+    border-radius: 5px;
+    margin-top: 22px;
+    margin-left: 40px;
+}
+
+.download_icon{
+    width: 7%;
+    background-color: white;
+    padding: 7px;
+    border-radius: 5px;
+    margin-top: 22px;
+    margin-left: 15px;
+}
+
+.full_screen_icon{
+    width: 7%;
+    background-color: white;
+    padding: 7px;
+    border-radius: 5px;
+    margin-top: 22px;
+    margin-left: 15px;
+}
+
+.run_button{
+    background-color: rgb(245, 20, 20);
+    padding: 8px;
+    margin: 5vh;
+    font-size: 18px;
+    font-weight: 500;
+    color: white;
+}
+
+.right_side{
+    display: flex;
+    flex-direction: column;
+}
+
+.upper_right{
+    display: flex;
+    flex-direction: column;
+}
+
+.head{
+    display: flex;
+    flex-direction: row;
+    background-color: rgb(240, 233, 233);
+    height: 7vh;
+    width: 30vw;
+}
+
+.text2{
+    font-size: 20px;
+    font-weight: 600;
+    margin : 10px 0 0 15px;
+}
+
+.input_field2{
+    width: 30vw;
+    height: 38vh;
+    background-color: turquoise;
+}
+
+.text3{
+    font-size: 15px;
+    font-weight: 500;
+    margin-left: 15px;
+    padding-top: 10px;
+}
