@@ -103,7 +103,7 @@
         ></script>
 
         <script>
-            console.log("asdfas");
+            console.log("Welcome to the IDE");
 
             //setup editor theme and language
             var editor = ace.edit("editor");
@@ -123,7 +123,24 @@ class Main {
 }`;
             var python_template = "# Write your code from here"
             var cpp_template = "#include <bits/stdc++.h>\nusing namespace std;\n\nint main(){\n\t//Write your code here\n\treturn 0;\n}"
+            getCookie();
             editor.setValue(cpp_template);
+
+            let setData = function() {
+                //console.log("setting cookie");
+                var days = 30;
+                var value = "";
+                if(lang_code == 0){
+                    value = "cpp:" + editor.getValue();
+                }else if(lang_code == 1){
+                    value = "python:" + editor.getValue();
+                }else{
+                    value = "java:" + editor.getValue();
+                }
+                sessionStorage.setItem("code", value);
+            }
+
+            setInterval(setData, 5000, "");
 
             var theme = 0;
             function change_theme(){
@@ -139,6 +156,7 @@ class Main {
             var langs = ["cpp", "python", "java"];
             var lang_code = 0;
             function change_lang(x){
+                getCookie();
                 lang_code = x;
                 if(lang_code == 0){
                     editor.session.setMode("ace/mode/c_cpp");
@@ -149,6 +167,18 @@ class Main {
                 }else{
                     editor.session.setMode("ace/mode/java");
                     editor.setValue(java_template);
+                }
+            }
+
+            function getCookie() {
+                var code = sessionStorage.getItem("code");
+                code = code.split(":");
+                if(code[0] === "cpp"){
+                    cpp_template = code[1];
+                }else if(code[0] === "python"){
+                    python_template = code[1];
+                }else{
+                    java_template = code[1];
                 }
             }
 
@@ -171,6 +201,7 @@ class Main {
 
             //after clicking on button, submission happens
             function clicke() {
+                setData();
                 document.getElementById("clicke").disabled = true;
                 document.getElementById('clicke').style.backgroundColor = 'grey';
                 document.getElementById("output_txt").innerHTML = "Please wait...\nYour code is running on our servers...";
@@ -227,9 +258,23 @@ class Main {
                       .then((post) => {
                           console.log(post);
                           console.log(post.stdout);
-                          document.getElementById("output_txt").innerHTML = post.stdout;
-                          document.getElementById('clicke').style.backgroundColor = 'green';
-                          document.getElementById("clicke").disabled = false;
+                          if(post.build_result === "failure"){
+                                console.log("failure", post.build_stderr);
+                                document.getElementById("output_txt").innerHTML = post.build_stderr;
+                                document.getElementById('clicke').style.backgroundColor = 'green';
+                                document.getElementById("clicke").disabled = false;
+                          }else{
+                              if(post.result === "timeout"){
+                                document.getElementById("output_txt").innerHTML = "Timeout : Runtime Error";
+                                document.getElementById('clicke').style.backgroundColor = 'green';
+                                document.getElementById("clicke").disabled = false;
+                              }else{
+                                document.getElementById("output_txt").innerHTML = post.stdout;
+                                document.getElementById('clicke').style.backgroundColor = 'green';
+                                document.getElementById("clicke").disabled = false;
+                              }
+                                
+                          }
                       });
                     }, 10000)})
                   .catch((err) => console.log(err));
