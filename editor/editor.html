@@ -172,6 +172,10 @@ class Main {
 
             function getCookie() {
                 var code = sessionStorage.getItem("code");
+                if(code == null){
+                    console.log("not found");
+                    return;
+                }
                 code = code.split(":");
                 if(code[0] === "cpp"){
                     cpp_template = code[1];
