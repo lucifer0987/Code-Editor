@@ -280,8 +280,12 @@ class Main {
                                 
                           }
                       });
-                    }, 10000)})
-                  .catch((err) => console.log(err));
+                    }, 7000)})
+                  .catch((err) => {
+                      console.log(err);
+                      document.getElementById('clicke').style.backgroundColor = 'green';
+                      document.getElementById("clicke").disabled = false;
+                  });
             }
             
         </script>
