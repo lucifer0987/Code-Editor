@@ -138,7 +138,7 @@ class Main {
                 }else{
                     value = "java:" + editor.getValue();
                 }
-                sessionStorage.setItem("code", value);
+                localStorage.setItem("code", value);
             }
 
             setInterval(setData, 5000, "");
@@ -172,7 +172,7 @@ class Main {
             }
 
             function getCookie() {
-                var code = sessionStorage.getItem("code");
+                var code = localStorage.getItem("code");
                 if(code == null){
                     console.log("not found");
                     return;
